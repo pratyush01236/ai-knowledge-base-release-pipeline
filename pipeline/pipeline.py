@@ -3,12 +3,12 @@ from .evaluator import evaluate
 from .monitor import Monitor
 from .scheduler import in_window,retry_plan
 from .security import contains_prompt_injection
-from .store import activate,current_version,ingest_file,rollback,snapshot
+from .store import activate,current_version,ingest_file,quarantine,rollback,snapshot
 class KnowledgePipeline:
     def __init__(self): self.monitor=Monitor()
     def ingest(self,filename,data):
         text=data.decode("utf-8",errors="replace")
-        if contains_prompt_injection(text): return ingest_file(filename,b"") if False else {"status":"quarantined","reason":"prompt injection detected"}
+        if contains_prompt_injection(text): return quarantine(filename,data,"prompt injection detected")
         return ingest_file(filename,data)
     def release(self):
         docs=[d for d in snapshot()["documents"].values() if d["status"]=="candidate"]
