@@ -1,0 +1,11 @@
+venv/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+state.json
+audit.log
+quarantine/*
+!quarantine/.gitkeep
+knowledge/*
+!knowledge/.gitkeep
